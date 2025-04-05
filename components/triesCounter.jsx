@@ -5,6 +5,6 @@ export default function triesCounter({color}) {
         2: 'bg-green-500',
       };
     return(
-        <main className={`w-[1vw] h-[1vw] rounded-full ${colors[color] || 'bg-gray-500'}`} />
+        <main className={`md:w-[1vw] md:h-[1vw] w-[1.5vw] h-[1.5vw] rounded-full ${colors[color] || 'bg-gray-500'}`} />
     )
 }

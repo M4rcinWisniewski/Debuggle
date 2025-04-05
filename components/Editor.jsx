@@ -7,8 +7,8 @@ import Dialog from './Dialog';
 import data from "./data.json"
 import useLocalStorage from "@/hooks/useLocalStorage";
 
-export default function EditorComponent({message, setMessage, tries, incrementTries}) {
-    const {markSolved} = useLocalStorage();
+export default function EditorComponent({message, setMessage}) {
+    const {tries, markSolved, incrementTries} = useLocalStorage();
     const editorRef = useRef(null);
     const [triesArray, setTriesArray] = useState([])
 
@@ -34,6 +34,7 @@ export default function EditorComponent({message, setMessage, tries, incrementTr
                 .map(line => line.trim())
                 .filter(line => line.length > 0)  // Remove empty lines
                 .join('\n')
+                //Dangerous regEx area 💀
                 .replace(/\s+/g, ' ')  // Replace multiple spaces with a single space
                 .replace(/\s*([=+\-*/<>!,():{}[\]])\s*/g, '$1')  // Remove spaces around operators and punctuation
                 .replace(/\s+/g, ' ')  // Clean up any remaining multiple spaces
@@ -50,7 +51,7 @@ export default function EditorComponent({message, setMessage, tries, incrementTr
             triesArray.push(2)
             markSolved()
         } else {
-            setMessage(`Not quite right. ${data.hints[tries.length <= 2 ? tries.length : 2]} `)
+            setMessage(`Not quite right. ${data.hints[tries < 2 ? tries : 1]} `)
             incrementTries()
             triesArray.push(1)
 
@@ -60,8 +61,8 @@ export default function EditorComponent({message, setMessage, tries, incrementTr
 
     return (
         <main className='flex justify-center items-center flex-col text-white gap-5'>
-            <div className='flex justify-center items-center gap-5'>
-            <div className='w-[50vw]'>
+            <div className='flex flex-col-reverse md:flex-row justify-center items-center gap-5'>
+            <div className='w-[90vw] md:w-[50vw]'>
                 <Editor
                     theme='vs-dark'
                     height="60vh"
@@ -75,10 +76,11 @@ export default function EditorComponent({message, setMessage, tries, incrementTr
                 <div className='flex gap-5'>{triesArray.map((el, i) => <TriesCounter key={i} color={el} />)}</div>
             </div>
             </div>
-            <Button variant={"default"} onClick={compareSolution}>Check Solution</Button>
-            <Button variant={"destructive"} onClick={resetCode} >Reset code</Button>
-
-
+            <div className={`flex justify-center items-center gap-5`}>
+                <Button variant={"default"} onClick={compareSolution}>Check Solution</Button>
+                <Button variant={"destructive"} onClick={resetCode} >Reset code</Button>
+            </div>
         </main>
     );
 }
+

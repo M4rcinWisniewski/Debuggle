@@ -6,12 +6,12 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 function App() {
     const [message, setMessage] = useState("There is one bug. Let's see if you can spot it!");
-    const {canSolve, incrementTries, tries} = useLocalStorage();
+    const {canSolve, tries} = useLocalStorage();
     return (
     <div className="flex flex-col justify-center items-center gap-10">
       <h1 className='text-6xl font-bold text-white'>Debuggle</h1>
 
-        {!canSolve  || message === "Congratulations!" ? <Congratulations tries={tries}/>: <EditorComponent setMessage={setMessage} tries={tries} incrementTries={incrementTries}/>}
+        {!canSolve  || message === "Congratulations!" ? <Congratulations tries={tries}/>: <EditorComponent message={message} setMessage={setMessage}/>}
     </div>
   );
 }

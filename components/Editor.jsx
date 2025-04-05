@@ -32,7 +32,12 @@ export default function EditorComponent({message, setMessage, tries, incrementTr
             return str
                 .split('\n')
                 .map(line => line.trim())
-                .join('\n');
+                .filter(line => line.length > 0)  // Remove empty lines
+                .join('\n')
+                .replace(/\s+/g, ' ')  // Replace multiple spaces with a single space
+                .replace(/\s*([=+\-*/<>!,():{}[\]])\s*/g, '$1')  // Remove spaces around operators and punctuation
+                .replace(/\s+/g, ' ')  // Clean up any remaining multiple spaces
+                .trim();
         };
 
         const normalizedEditorValue = normalizeString(editorValue);

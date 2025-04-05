@@ -5,10 +5,17 @@ import {Button} from "@/components/ui/button";
 
 export default function Congratulations({tries}) {
     const [copied, setCopied] = useState(false)
+    const [countStreak, setCountStreak] = useState(() => {
+        // Initialize state from localStorage
+        const saved = localStorage.getItem('count');
+        return saved !== null ? JSON.parse(saved) : 0;
+    });
+
+
     const date = new Date()
     const ifNumberLessThanTen = num => num < 10 ? `0${num}` : num
     const displayDate = `${date.getFullYear()}.${ifNumberLessThanTen(date.getMonth() + 1)}.${ifNumberLessThanTen(date.getDate())}`
-    const result = copyResult(tries.length)
+    const result = copyResult()
 
     const copyText = () => {
         // Use the Clipboard API to copy the text to the clipboard
@@ -33,7 +40,7 @@ export default function Congratulations({tries}) {
             </div>
             <p>Your current streak: 🔥</p>
             <div>
-                {result.map((word, index) => <p key={index}>{word}</p>)}
+                {result.split("\n").map((word, index) => <p key={index}>{word}</p>)}
             </div>
             <Button onClick={copyText}>
                 {copied ? 'Copied!' : 'Copy to Clipboard'}
@@ -41,3 +48,4 @@ export default function Congratulations({tries}) {
         </main>
     )
 }
+
